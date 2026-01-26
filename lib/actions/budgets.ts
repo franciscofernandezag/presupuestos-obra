@@ -134,8 +134,8 @@ export async function createBudget(input: CreateBudgetInput) {
       created_by: user.id
     })
 
-  revalidatePath('/dashboard')
-  revalidatePath('/dashboard/budgets')
+  revalidatePath('/')
+  revalidatePath('/budgets')
 
   return budget
 }
@@ -158,9 +158,9 @@ export async function updateBudget(id: string, input: UpdateBudgetInput) {
 
   if (error) throw error
 
-  revalidatePath('/dashboard')
-  revalidatePath('/dashboard/budgets')
-  revalidatePath(`/dashboard/budgets/${id}`)
+  revalidatePath('/')
+  revalidatePath('/budgets')
+  revalidatePath(`/budgets/${id}`)
 }
 
 export async function deleteBudget(id: string) {
@@ -173,8 +173,8 @@ export async function deleteBudget(id: string) {
 
   if (error) throw error
 
-  revalidatePath('/dashboard')
-  revalidatePath('/dashboard/budgets')
+  revalidatePath('/')
+  revalidatePath('/budgets')
 }
 
 export async function updateBudgetStatus(id: string, status: 'draft' | 'active' | 'archived') {
@@ -187,9 +187,9 @@ export async function updateBudgetStatus(id: string, status: 'draft' | 'active' 
 
   if (error) throw error
 
-  revalidatePath('/dashboard')
-  revalidatePath('/dashboard/budgets')
-  revalidatePath(`/dashboard/budgets/${id}`)
+  revalidatePath('/')
+  revalidatePath('/budgets')
+  revalidatePath(`/budgets/${id}`)
 }
 
 export async function importCompute(budgetId: string, parsed: ParsedCompute) {
@@ -257,7 +257,7 @@ export async function importCompute(budgetId: string, parsed: ParsedCompute) {
     }
   }
 
-  revalidatePath(`/dashboard/budgets/${budgetId}`)
+  revalidatePath(`/budgets/${budgetId}`)
 
   return { success: true, warnings: parsed.warnings }
 }
@@ -292,5 +292,5 @@ export async function setCurrentVersion(versionId: string, budgetId: string) {
 
   if (error) throw error
 
-  revalidatePath(`/dashboard/budgets/${budgetId}`)
+  revalidatePath(`/budgets/${budgetId}`)
 }

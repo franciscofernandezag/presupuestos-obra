@@ -23,7 +23,7 @@ export function BudgetList({ budgets }: BudgetListProps) {
         </p>
         <div className="mt-6">
           <Button asChild>
-            <Link href="/dashboard/budgets/new">
+            <Link href="/budgets/new">
               <Plus className="mr-2 h-4 w-4" />
               Nuevo Presupuesto
             </Link>

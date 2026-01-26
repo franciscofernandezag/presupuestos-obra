@@ -12,11 +12,11 @@ import {
 } from 'lucide-react'
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Presupuestos', href: '/dashboard/budgets', icon: FileText },
-  { name: 'Materiales', href: '/dashboard/materials', icon: Package },
-  { name: 'Inflacion', href: '/dashboard/inflation', icon: TrendingUp },
-  { name: 'Configuracion', href: '/dashboard/settings', icon: Settings },
+  { name: 'Inicio', href: '/home', icon: LayoutDashboard },
+  { name: 'Presupuestos', href: '/budgets', icon: FileText },
+  { name: 'Materiales', href: '/materials', icon: Package },
+  { name: 'Inflacion', href: '/inflation', icon: TrendingUp },
+  { name: 'Configuracion', href: '/settings', icon: Settings },
 ]
 
 export function Sidebar() {
@@ -32,7 +32,7 @@ export function Sidebar() {
           <nav className="flex-1 px-2 space-y-1">
             {navigation.map((item) => {
               const isActive = pathname === item.href ||
-                (item.href !== '/dashboard' && pathname.startsWith(item.href))
+                (item.href !== '/' && pathname.startsWith(item.href))
               return (
                 <Link
                   key={item.name}

@@ -35,7 +35,7 @@ export function BudgetForm() {
 
     try {
       const budget = await createBudget(formData)
-      router.push(`/dashboard/budgets/${budget.id}`)
+      router.push(`/budgets/${budget.id}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al crear presupuesto')
       setLoading(false)

@@ -40,7 +40,7 @@ export default async function DashboardPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href="/dashboard/budgets/new">
+          <Link href="/budgets/new">
             <Plus className="mr-2 h-4 w-4" />
             Nuevo Presupuesto
           </Link>
@@ -103,25 +103,25 @@ export default async function DashboardPage() {
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <Button variant="outline" className="justify-start" asChild>
-            <Link href="/dashboard/budgets/new">
+            <Link href="/budgets/new">
               <Plus className="mr-2 h-4 w-4" />
               Crear nuevo presupuesto
             </Link>
           </Button>
           <Button variant="outline" className="justify-start" asChild>
-            <Link href="/dashboard/materials">
+            <Link href="/materials">
               <Package className="mr-2 h-4 w-4" />
               Gestionar materiales
             </Link>
           </Button>
           <Button variant="outline" className="justify-start" asChild>
-            <Link href="/dashboard/inflation">
+            <Link href="/inflation">
               <TrendingUp className="mr-2 h-4 w-4" />
               Indices de inflacion
             </Link>
           </Button>
           <Button variant="outline" className="justify-start" asChild>
-            <Link href="/dashboard/budgets">
+            <Link href="/budgets">
               <FileText className="mr-2 h-4 w-4" />
               Ver todos los presupuestos
             </Link>

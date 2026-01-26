@@ -79,7 +79,7 @@ export function BudgetCard({ budget }: BudgetCardProps) {
             <div className="space-y-1">
               <CardTitle className="text-lg">
                 <Link
-                  href={`/dashboard/budgets/${budget.id}`}
+                  href={`/budgets/${budget.id}`}
                   className="hover:underline"
                 >
                   {budget.name}
@@ -97,13 +97,13 @@ export function BudgetCard({ budget }: BudgetCardProps) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem asChild>
-                  <Link href={`/dashboard/budgets/${budget.id}`}>
+                  <Link href={`/budgets/${budget.id}`}>
                     <Edit className="mr-2 h-4 w-4" />
                     Editar
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href={`/dashboard/budgets/${budget.id}/versions`}>
+                  <Link href={`/budgets/${budget.id}/versions`}>
                     <History className="mr-2 h-4 w-4" />
                     Versiones
                   </Link>

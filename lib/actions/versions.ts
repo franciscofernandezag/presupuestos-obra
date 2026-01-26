@@ -103,7 +103,7 @@ export async function createVersion(
     }
   }
 
-  revalidatePath(`/dashboard/budgets/${budgetId}`)
+  revalidatePath(`/budgets/${budgetId}`)
   return newVersion
 }
 
@@ -124,7 +124,7 @@ export async function setCurrentVersion(versionId: string, budgetId: string) {
 
   if (error) throw error
 
-  revalidatePath(`/dashboard/budgets/${budgetId}`)
+  revalidatePath(`/budgets/${budgetId}`)
 }
 
 export async function deleteVersion(versionId: string, budgetId: string) {
@@ -137,7 +137,7 @@ export async function deleteVersion(versionId: string, budgetId: string) {
 
   if (error) throw error
 
-  revalidatePath(`/dashboard/budgets/${budgetId}`)
+  revalidatePath(`/budgets/${budgetId}`)
 }
 
 export async function applyInflation(
@@ -236,7 +236,7 @@ export async function applyInflation(
     }
   }
 
-  revalidatePath(`/dashboard/budgets/${budgetId}`)
+  revalidatePath(`/budgets/${budgetId}`)
   return newVersion
 }
 
@@ -291,7 +291,7 @@ export async function createInflationIndex(input: {
 
   if (error) throw error
 
-  revalidatePath('/dashboard/inflation')
+  revalidatePath('/inflation')
   return data
 }
 
@@ -305,5 +305,5 @@ export async function deleteInflationIndex(id: string) {
 
   if (error) throw error
 
-  revalidatePath('/dashboard/inflation')
+  revalidatePath('/inflation')
 }

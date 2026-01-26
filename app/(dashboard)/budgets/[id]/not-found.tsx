@@ -11,7 +11,7 @@ export default function BudgetNotFound() {
         El presupuesto que buscas no existe o no tienes acceso a el.
       </p>
       <Button asChild>
-        <Link href="/dashboard/budgets">
+        <Link href="/budgets">
           Volver a presupuestos
         </Link>
       </Button>

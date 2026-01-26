@@ -26,7 +26,7 @@ export default async function BudgetsPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href="/dashboard/budgets/new">
+          <Link href="/budgets/new">
             <Plus className="mr-2 h-4 w-4" />
             Nuevo Presupuesto
           </Link>

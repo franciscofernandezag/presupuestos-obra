@@ -59,7 +59,7 @@ export function BudgetEditor({ budget }: BudgetEditorProps) {
             Importar Computo
           </Button>
           <Button variant="outline" asChild>
-            <Link href={`/dashboard/budgets/${budget.id}/versions`}>
+            <Link href={`/budgets/${budget.id}/versions`}>
               <History className="h-4 w-4 mr-2" />
               Versiones
             </Link>
