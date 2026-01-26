@@ -7,7 +7,13 @@ import type { ParsedCompute, ParsedComputeCategory } from '@/lib/types'
  */
 export function parseComputeExcel(file: ArrayBuffer): ParsedCompute {
   const workbook = XLSX.read(file, { type: 'array' })
-  const sheet = workbook.Sheets[workbook.SheetNames[0]]
+
+  // Try to find a sheet named "Computo" first, otherwise use the first sheet
+  const sheetName = workbook.SheetNames.find(name =>
+    name.toLowerCase().includes('computo') || name.toLowerCase().includes('cómputo')
+  ) || workbook.SheetNames[0]
+
+  const sheet = workbook.Sheets[sheetName]
   const data = XLSX.utils.sheet_to_json(sheet, {
     header: 1,
     defval: ''
@@ -22,9 +28,9 @@ export function parseComputeExcel(file: ArrayBuffer): ParsedCompute {
 
   // Detect columns
   const headerRow = data[0] as string[]
-  const itemCol = findColumn(headerRow, ['item', 'items', 'descripcion', 'tarea', 'concepto', 'detalle'])
-  const unitCol = findColumn(headerRow, ['u', 'unid', 'unidad', 'unit', 'un'])
-  const qtyCol = findColumn(headerRow, ['cantidad', 'cant', 'qty', 'quantity', 'cant.'])
+  const itemCol = findColumn(headerRow, ['item', 'items', 'ítems', 'itéms', 'descripcion', 'descripción', 'tarea', 'concepto', 'detalle', 'rubro'])
+  const unitCol = findColumn(headerRow, ['u', 'unid', 'unidad', 'unit', 'un', 'ud', 'und'])
+  const qtyCol = findColumn(headerRow, ['cantidad', 'cant', 'qty', 'quantity', 'cant.', 'total', 'subtotal'])
 
   if (itemCol === -1) {
     result.warnings.push('No se encontro columna de items')
