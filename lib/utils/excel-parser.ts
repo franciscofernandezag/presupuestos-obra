@@ -8,7 +8,7 @@ import type { ParsedCompute, ParsedComputeCategory } from '@/lib/types'
 export function parseComputeExcel(file: ArrayBuffer): ParsedCompute {
   const workbook = XLSX.read(file, { type: 'array' })
   const sheet = workbook.Sheets[workbook.SheetNames[0]]
-  const data = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, {
+  const data = XLSX.utils.sheet_to_json(sheet, {
     header: 1,
     defval: ''
   }) as unknown[][]

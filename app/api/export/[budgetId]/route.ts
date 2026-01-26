@@ -50,7 +50,7 @@ export async function GET(
     // Generate filename
     const filename = `${budget.name.replace(/[^a-zA-Z0-9]/g, '_')}_v${budget.current_version?.version_number || 1}.xlsx`
 
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(buffer), {
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'Content-Disposition': `attachment; filename="${filename}"`
