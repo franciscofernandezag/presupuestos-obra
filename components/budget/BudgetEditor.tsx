@@ -5,9 +5,10 @@ import { BudgetWithCategories } from '@/lib/types'
 import { CategorySection } from './CategorySection'
 import { BudgetSummary } from './BudgetSummary'
 import { ImportComputeDialog } from './ImportComputeDialog'
+import { CopyItemsDialog } from './CopyItemsDialog'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Upload, FileText, History, Download, Settings } from 'lucide-react'
+import { Upload, FileText, History, Download, Copy } from 'lucide-react'
 import Link from 'next/link'
 
 interface BudgetEditorProps {
@@ -28,6 +29,7 @@ const statusColors = {
 
 export function BudgetEditor({ budget }: BudgetEditorProps) {
   const [importOpen, setImportOpen] = useState(false)
+  const [copyOpen, setCopyOpen] = useState(false)
 
   const version = budget.current_version
 
@@ -54,6 +56,10 @@ export function BudgetEditor({ budget }: BudgetEditorProps) {
         </div>
 
         <div className="flex flex-wrap gap-2">
+          <Button variant="outline" onClick={() => setCopyOpen(true)}>
+            <Copy className="h-4 w-4 mr-2" />
+            Copiar Items
+          </Button>
           <Button variant="outline" onClick={() => setImportOpen(true)}>
             <Upload className="h-4 w-4 mr-2" />
             Importar Computo
@@ -101,6 +107,7 @@ export function BudgetEditor({ budget }: BudgetEditorProps) {
                   key={category.id}
                   category={category}
                   versionId={version?.id || ''}
+                  budgetId={budget.id}
                 />
               ))}
           </div>
@@ -115,6 +122,13 @@ export function BudgetEditor({ budget }: BudgetEditorProps) {
         budgetId={budget.id}
         open={importOpen}
         onOpenChange={setImportOpen}
+      />
+
+      {/* Copy items dialog */}
+      <CopyItemsDialog
+        budgetId={budget.id}
+        open={copyOpen}
+        onOpenChange={setCopyOpen}
       />
     </div>
   )

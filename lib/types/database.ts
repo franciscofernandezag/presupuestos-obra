@@ -248,3 +248,40 @@ export interface ParsedCompute {
   categories: ParsedComputeCategory[]
   warnings: string[]
 }
+
+// Copy items types
+
+export interface CopyTasksInput {
+  sourceBudgetId: string
+  sourceVersionId: string
+  taskIds: string[]
+  targetBudgetId: string
+  targetCategoryId: string | null
+  newCategoryName?: string
+}
+
+export interface CopyTasksResult {
+  success: boolean
+  copiedCount: number
+  newTaskIds: string[]
+  errors?: string[]
+}
+
+export interface TaskForCopy extends Task {
+  task_price: TaskPrice | null
+  materials: TaskMaterial[]
+}
+
+export interface CategoryForCopy {
+  id: string
+  name: string
+  tasks: TaskForCopy[]
+}
+
+export interface BudgetForCopy {
+  id: string
+  name: string
+  project_name: string | null
+  current_version: { id: string; version_number: number } | null
+  categories: CategoryForCopy[]
+}

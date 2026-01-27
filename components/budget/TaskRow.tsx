@@ -10,9 +10,10 @@ import { TaskCostAnalysisModal } from './TaskCostAnalysisModal'
 interface TaskRowProps {
   task: TaskWithPrice
   versionId: string
+  budgetId: string
 }
 
-export function TaskRow({ task, versionId }: TaskRowProps) {
+export function TaskRow({ task, versionId, budgetId }: TaskRowProps) {
   const [modalOpen, setModalOpen] = useState(false)
 
   const price = task.task_price
@@ -63,6 +64,7 @@ export function TaskRow({ task, versionId }: TaskRowProps) {
       <TaskCostAnalysisModal
         task={task}
         versionId={versionId}
+        budgetId={budgetId}
         open={modalOpen}
         onOpenChange={setModalOpen}
       />

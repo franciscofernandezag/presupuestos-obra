@@ -9,13 +9,16 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Plus, Trash2 } from 'lucide-react'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Plus, Trash2, Download, Search, Loader2, X } from 'lucide-react'
 import { formatCurrency, formatNumber } from '@/lib/utils/format'
 import { createClient } from '@/lib/supabase/client'
+import { searchSimilarTasks, SimilarTaskResult } from '@/lib/actions/copy-items'
 
 interface TaskCostAnalysisModalProps {
   task: TaskWithPrice
   versionId: string
+  budgetId: string
   open: boolean
   onOpenChange: (open: boolean) => void
 }
@@ -31,6 +34,7 @@ interface MaterialRow {
 export function TaskCostAnalysisModal({
   task,
   versionId,
+  budgetId,
   open,
   onOpenChange
 }: TaskCostAnalysisModalProps) {
@@ -41,6 +45,11 @@ export function TaskCostAnalysisModal({
   const [laborUnitPrice, setLaborUnitPrice] = useState(0)
   const [laborQuantity, setLaborQuantity] = useState(0)
   const [materials, setMaterials] = useState<MaterialRow[]>([])
+
+  // Import panel state
+  const [showImportPanel, setShowImportPanel] = useState(false)
+  const [searchingTasks, setSearchingTasks] = useState(false)
+  const [similarTasks, setSimilarTasks] = useState<SimilarTaskResult[]>([])
 
   // Load data when modal opens
   useEffect(() => {
@@ -130,6 +139,39 @@ export function TaskCostAnalysisModal({
     setMaterials(materials.filter((_, i) => i !== index))
   }
 
+  async function handleSearchSimilar() {
+    setSearchingTasks(true)
+    try {
+      const results = await searchSimilarTasks(task.name, budgetId)
+      setSimilarTasks(results)
+      setShowImportPanel(true)
+    } catch (err) {
+      setError('Error buscando tareas similares')
+    } finally {
+      setSearchingTasks(false)
+    }
+  }
+
+  function handleImportFromTask(result: SimilarTaskResult) {
+    const { task_price, materials: sourceMaterials } = result.task
+
+    if (task_price) {
+      setLaborUnitPrice(task_price.labor_unit_price || 0)
+      setLaborQuantity(task_price.labor_quantity || 0)
+    }
+
+    if (sourceMaterials && sourceMaterials.length > 0) {
+      setMaterials(sourceMaterials.map(m => ({
+        name: m.name,
+        unit: m.unit || '',
+        quantity: m.quantity || 0,
+        unit_price: m.unit_price || 0
+      })))
+    }
+
+    setShowImportPanel(false)
+  }
+
   async function handleSave() {
     setLoading(true)
     setError(null)
@@ -215,7 +257,73 @@ export function TaskCostAnalysisModal({
           </Alert>
         )}
 
+        {/* Import panel */}
+        {showImportPanel && (
+          <div className="border rounded-lg p-4 bg-blue-50 space-y-3">
+            <div className="flex items-center justify-between">
+              <h4 className="font-medium text-blue-900">Importar desde otra tarea</h4>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6"
+                onClick={() => setShowImportPanel(false)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            {similarTasks.length === 0 ? (
+              <p className="text-sm text-blue-700">
+                No se encontraron tareas similares con precios cargados
+              </p>
+            ) : (
+              <ScrollArea className="h-48">
+                <div className="space-y-2">
+                  {similarTasks.map((result, idx) => (
+                    <div
+                      key={idx}
+                      className="p-2 bg-white rounded border hover:border-blue-400 cursor-pointer"
+                      onClick={() => handleImportFromTask(result)}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium truncate">{result.task.name}</p>
+                          <p className="text-xs text-gray-500">{result.budgetName}</p>
+                        </div>
+                        <div className="text-right text-xs">
+                          <div className="font-medium">
+                            {formatCurrency((result.task.task_price?.labor_total || 0) + (result.task.task_price?.materials_total || 0))}
+                          </div>
+                          <div className="text-gray-500">
+                            {result.task.materials.length} mat.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            )}
+          </div>
+        )}
+
         <div className="space-y-6">
+          {/* Import button */}
+          <div className="flex justify-end">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleSearchSimilar}
+              disabled={searchingTasks}
+            >
+              {searchingTasks ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Download className="h-4 w-4 mr-2" />
+              )}
+              Importar de otro presupuesto
+            </Button>
+          </div>
+
           {/* Mano de Obra */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">

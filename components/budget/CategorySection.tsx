@@ -11,9 +11,10 @@ import { formatCurrency } from '@/lib/utils/format'
 interface CategorySectionProps {
   category: CategoryWithTasks
   versionId: string
+  budgetId: string
 }
 
-export function CategorySection({ category, versionId }: CategorySectionProps) {
+export function CategorySection({ category, versionId, budgetId }: CategorySectionProps) {
   const [expanded, setExpanded] = useState(true)
 
   // Calculate totals
@@ -87,7 +88,7 @@ export function CategorySection({ category, versionId }: CategorySectionProps) {
             {category.tasks
               .sort((a, b) => a.order_index - b.order_index)
               .map((task) => (
-                <TaskRow key={task.id} task={task} versionId={versionId} />
+                <TaskRow key={task.id} task={task} versionId={versionId} budgetId={budgetId} />
               ))}
           </div>
         </CardContent>
