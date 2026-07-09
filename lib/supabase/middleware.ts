@@ -7,8 +7,8 @@ export async function updateSession(request: NextRequest) {
   })
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    'https://spssdksmnbytmfjpjxzv.supabase.co',
+    'sb_publishable_-_XchJw1CrPShjrcb1OwTw_q_iUzL4v',
     {
       cookies: {
         getAll() {
@@ -29,11 +29,13 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
+  // IMPORTANTE: No ejecutes `supabase.auth.getUser()` en rutas públicas
+  // porque puede causar errores si no hay sesión
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Protected routes
+  // Definir rutas públicas y protegidas
   const isAuthRoute = request.nextUrl.pathname.startsWith('/login') ||
     request.nextUrl.pathname.startsWith('/register') ||
     request.nextUrl.pathname.startsWith('/forgot-password')
@@ -43,14 +45,14 @@ export async function updateSession(request: NextRequest) {
 
   const isProtectedRoute = !isAuthRoute && !isPublicRoute
 
-  // Redirect to login if not authenticated and trying to access protected route
+  // Redirigir a login si no está autenticado y intenta acceder a ruta protegida
   if (!user && isProtectedRoute) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
-  // Redirect to home if authenticated and trying to access auth routes
+  // Redirigir a home si está autenticado y intenta acceder a rutas de auth
   if (user && isAuthRoute) {
     const url = request.nextUrl.clone()
     url.pathname = '/home'
